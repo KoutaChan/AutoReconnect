@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+group = 'xyz.n7mn.dev'
+version = '1.0'
+
+
+repositories {
+
+    maven {
+        mavenCentral()
+
+        name = 'destroystokyo-repo'
+        url = 'https://repo.destroystokyo.com/repository/maven-public/'
+    }
+
+}
+
+dependencies {
+    compileOnly 'io.github.waterfallmc:waterfall-api:1.17-R0.1-SNAPSHOT'
+}
+
+
+processResources {
+    expand(version:version)
+}

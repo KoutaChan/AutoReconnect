@@ -1,0 +1,4 @@
+name: AutoReconnect
+version: ${version}
+another: 7mi_chan
+main: xyz.n7mn.dev.autoreconnect.AutoReconnect
