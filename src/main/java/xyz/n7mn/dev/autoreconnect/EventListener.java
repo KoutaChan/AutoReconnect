@@ -1,5 +1,7 @@
 package xyz.n7mn.dev.autoreconnect;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.ServerKickEvent;
@@ -29,10 +31,12 @@ public class EventListener implements Listener {
 
         e.getPlayer().connect(lobby);
         e.getPlayer().sendMessage(new TextComponent("以下の理由でkickされました。"));
-        e.getPlayer().sendMessage(e.getKickReasonComponent());
-        e.getPlayer().sendMessage(new TextComponent("生活サーバーへは「/server sv」"));
-        e.getPlayer().sendMessage(new TextComponent("イベントサーバーへは「/server main」"));
-        e.getPlayer().sendMessage(new TextComponent("で戻れます。(BANされた場合、サーバーが停止した場合を除く)"));
+        BaseComponent[] reasonComponent = e.getKickReasonComponent();
+        for (BaseComponent c : reasonComponent){
+            c.setColor(ChatColor.RED);
+        }
+        e.getPlayer().sendMessage(reasonComponent);
+        e.getPlayer().sendMessage(new TextComponent("サーバーへは「/server "+e.getKickedFrom().getName()+"」で戻れます。(BANされた場合、サーバーが停止した場合を除く)"));
         //e.getPlayer().setReconnectServer(lobby);
         e.setCancelled(true);
     }
