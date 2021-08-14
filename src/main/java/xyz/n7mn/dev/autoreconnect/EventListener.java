@@ -25,7 +25,7 @@ public class EventListener implements Listener {
         if (e.getKickedFrom().getName().equals("lobby")){
             return;
         }
-        System.out.println(e.getKickedFrom().getName());
+        //System.out.println(e.getKickedFrom().getName());
 
         ServerInfo lobby = plugin.getProxy().getServerInfo("lobby");
 
