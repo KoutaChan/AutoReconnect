@@ -11,32 +11,25 @@ import net.md_5.bungee.event.EventHandler;
 
 public class EventListener implements Listener {
 
-    private final Plugin plugin;
-
-    public EventListener(Plugin plugin){
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void ServerKickEvent(ServerKickEvent e){
 
         System.out.println(e.getKickedFrom().getName());
 
-        if (e.getKickedFrom().getName().equals("lobby")){
-            return;
-        }
-        //System.out.println(e.getKickedFrom().getName());
+        boolean matched = AutoReconnect.INSTANCE.configuration.getStringList("disable").stream().anyMatch(str -> str.equals(e.getKickedFrom().getName()));
 
-        ServerInfo lobby = plugin.getProxy().getServerInfo("lobby");
+        if (matched) return;
 
-        e.getPlayer().connect(lobby);
+        ServerInfo serverInfo = AutoReconnect.INSTANCE.plugin.getProxy().getServerInfo(AutoReconnect.INSTANCE.configuration.getString("teleportId"));
+
+        e.getPlayer().connect(serverInfo);
         e.getPlayer().sendMessage(new TextComponent("以下の理由でkickされました。"));
         BaseComponent[] reasonComponent = e.getKickReasonComponent();
         for (BaseComponent c : reasonComponent){
             c.setColor(ChatColor.RED);
         }
         e.getPlayer().sendMessage(reasonComponent);
-        e.getPlayer().sendMessage(new TextComponent("サーバーへは「/server "+e.getKickedFrom().getName()+"」で戻れます。(BANされた場合、サーバーが停止した場合を除く)"));
+        e.getPlayer().sendMessage(new TextComponent("サーバーへは「/server " + e.getKickedFrom().getName() + "」で戻れます。(BANされた場合、サーバーが停止した場合を除く)"));
         //e.getPlayer().setReconnectServer(lobby);
         e.setCancelled(true);
     }
